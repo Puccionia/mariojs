@@ -1,0 +1,25 @@
+{
+    "imageURL": "./img/miscellaneous.png",
+
+    "frames": [
+        {
+            "name": "fragment-1",
+            "rect": [212, 20, 8, 8]
+        },
+        {
+            "name": "fragment-2",
+            "rect": [212, 36, 8, 8]
+        }
+    ],
+
+    "animations": [
+        {
+            "name": "fragment",
+            "frameLen": 0.10,
+            "frames": [
+                "fragment-1",
+                "fragment-2"
+            ]
+        }
+    ]
+}

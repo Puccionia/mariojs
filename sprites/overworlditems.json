@@ -1,0 +1,52 @@
+{
+    "imageURL": "./img/miscellaneous.png",
+
+    "frames": [
+        {
+            "name": "fragment-1",
+            "rect": [68, 20, 8, 8]
+        },
+        {
+            "name": "fragment-2",
+            "rect": [68, 36, 8, 8]
+        },
+        {
+            "name": "coin-1",
+            "rect": [0, 112, 16, 16]
+        },
+        {
+            "name": "coin-2",
+            "rect": [16, 112, 16, 16]
+        },
+        {
+            "name": "coin-3",
+            "rect": [32, 112, 16, 16]
+        },
+        {
+            "name": "coin-4",
+            "rect": [48, 112, 16, 16]
+        }
+    ],
+
+    "animations": [
+        {
+            "name": "fragment",
+            "frameLen": 0.10,
+            "frames": [
+                "fragment-1",
+                "fragment-2"
+            ]
+        },
+        {
+            "name": "coin",
+            "frameLen": 0.10,
+            "frames": [
+                "coin-4",
+                "coin-3",
+                "coin-2",
+                "coin-1"
+            ]
+        }
+
+    ]
+}
