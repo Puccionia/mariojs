@@ -5,7 +5,10 @@ export default class Breaker extends Trait {
         super('breaker');
 
         this.tileCollision = true;
-        this.break = true;
+        this.break = false;
+
+        this.onCollect = function() {
+        }
     }
 
    collides(me, them, side) {
@@ -31,6 +34,9 @@ export default class Breaker extends Trait {
             }
             else{
                 them.interactive.tomove = true;
+                if(!them.interactive.surprise && !them.interactive.breakable && !them.interactive.hitten){
+                    this.onCollect();
+                }
             }
         } 
         else if (side === Sides.LEFT) {

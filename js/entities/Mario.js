@@ -6,6 +6,7 @@ import Physics from '../traits/Physics.js';
 import Solid from '../traits/Solid.js';
 import Stomper from '../traits/Stomper.js';
 import Breaker from '../traits/Breaker.js';
+import Super from '../traits/Super.js';
 import {loadSpriteSheet} from '../loaders.js';
 
 const SLOW_DRAG = 1/1000;
@@ -18,8 +19,15 @@ export function loadMario() {
 
 function createMarioFactory(sprite) {
     const runAnim = sprite.animations.get('run');
+    const runAnimS = sprite.animations.get('S run');
+    const transf = sprite.animations.get('transform');
 
     function routeFrame(mario) {
+
+        if (mario.super.toTransform){
+            return transf(mario.super.transformTime);
+        }
+
         if (mario.jump.falling) {
             return 'jump';
         }
@@ -31,7 +39,22 @@ function createMarioFactory(sprite) {
 
             return runAnim(mario.go.distance);
         }
-        return 'idle';
+        return 'idle'
+    }
+
+    function routeFrameSuper(mario) {
+        if (mario.jump.falling) {
+            return 'S jump';
+        }
+
+        if (mario.go.distance > 0) {
+            if ((mario.vel.x > 0 && mario.go.dir < 0) || (mario.vel.x < 0 && mario.go.dir > 0)) {
+                return 'S break';
+            }
+
+            return runAnimS(mario.go.distance);
+        }
+        return 'S idle';
     }
 
     function setTurboState(turboOn) {
@@ -39,12 +62,18 @@ function createMarioFactory(sprite) {
     }
 
     function drawMario(context) {
-        sprite.draw(routeFrame(this), context, 0, 0, this.go.heading < 0);
+        if (!this.super.isSuper){
+            sprite.draw(routeFrame(this), context, 0, 0, this.go.heading < 0);
+        }
+        else{
+            sprite.draw(routeFrameSuper(this), context, 0, 0, this.go.heading < 0);
+        }
     }
 
     return function createMario() {
         const mario = new Entity();
-        mario.size.set(12, 16);
+        mario.size.set(14, 16);
+        mario.offset.y = 16;
         mario.offset.x = 1;
 
         mario.addTrait(new Physics());
@@ -54,6 +83,7 @@ function createMarioFactory(sprite) {
         mario.addTrait(new Killable());
         mario.addTrait(new Stomper());
         mario.addTrait(new Breaker());
+        mario.addTrait(new Super());
 
         mario.solid.makeCollision = false;
         mario.solid.entityCollides = false;

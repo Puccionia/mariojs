@@ -19,9 +19,10 @@ export function createQuestionFactory(sprite) {
 
     function routeFrame(question) {
        
-        if(question.interactive.moving === true){
+        if(question.interactive.moving === true || question.interactive.hitten === true){
             return 'hitten';
         }
+
         
         return 'nothing';
     }

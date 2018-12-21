@@ -4,6 +4,8 @@ import {loadKoopa, loadBlueKoopa} from './entities/Koopa.js';
 import {createBrickFactory} from './entities/Brick.js';
 import {createQuestionFactory} from './entities/Question.js';
 import {createFragmentFactory} from './entities/Fragment.js';
+import {createCoinFactory} from './entities/Coin.js';
+import {createMushroomFactory} from './entities/Mushroom.js';
 
 
 export function loadEntities() {
@@ -32,7 +34,10 @@ export function loadMisc(entityFactories, tileSprites, miscSprites) {
     return Promise.all([
         addAs(createBrickFactory(tileSprites),'brick'),
         addAs(createQuestionFactory(tileSprites), 'question'),
-        addAs(createFragmentFactory(miscSprites), 'fragment')
+        addAs(createFragmentFactory(miscSprites), 'fragment'),
+        addAs(createCoinFactory(miscSprites), 'coin'),
+        addAs(createMushroomFactory(miscSprites), 'mushroom'),
+
     ])
     .then(() => entityFactories);
 

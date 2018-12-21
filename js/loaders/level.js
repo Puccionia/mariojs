@@ -42,6 +42,12 @@ function setupEntities(levelSpec, level, entityFactory) {
             const createEntity = entityFactory[tile.type];
             const entity = createEntity();
             entity.pos.set(x * 16, y * 16);
+            console.log(tile.item);
+            if(tile.item){
+                 entity.interactive.surprise = entityFactory[tile.item];
+                 entity.interactive.breakable = false;
+            }
+            else entity.interactive.surprise = null;
             level.entities.add(entity);
         }
     });
@@ -95,7 +101,7 @@ function createBackgroundGrid(tiles, patterns) {
     const grid = new Matrix();
 
     for (const {tile, x, y} of expandTiles(tiles, patterns)) {
-        grid.set(x, y, {name: tile.name, type: tile.type});
+        grid.set(x, y, {name: tile.name, type: tile.type, item: tile.item});
     }
 
     return grid;

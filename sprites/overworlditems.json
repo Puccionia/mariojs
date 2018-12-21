@@ -25,6 +25,10 @@
         {
             "name": "coin-4",
             "rect": [48, 112, 16, 16]
+        },
+        {
+            "name": "mushroom",
+            "rect": [0, 0, 16, 16]
         }
     ],
 
@@ -39,7 +43,7 @@
         },
         {
             "name": "coin",
-            "frameLen": 0.10,
+            "frameLen": 0.05,
             "frames": [
                 "coin-4",
                 "coin-3",

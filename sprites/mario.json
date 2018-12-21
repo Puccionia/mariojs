@@ -4,28 +4,61 @@
     "frames": [
         {
             "name": "idle",
-            "rect": [276, 44, 14, 16]
+            "rect": [276, 33, 16, 32]
         },
         {
             "name": "run-1",
-            "rect": [290, 44, 14, 16]
+            "rect": [291, 33, 16, 32]
         },
         {
             "name": "run-2",
-            "rect": [304, 43, 14, 16]
+            "rect": [305, 33, 16, 32]
         },
         {
             "name": "run-3",
-            "rect": [321, 44, 14, 16]
+            "rect": [321, 33, 16, 32]
         },
         {
             "name": "break",
-            "rect": [337, 44, 14, 16]
+            "rect": [337, 33, 16, 32]
         },
         {
             "name": "jump",
-            "rect": [355, 44, 16, 16]
+            "rect": [355, 33, 16, 32]
+        },
+        {
+            "name": "medium",
+            "rect": [259, 33, 16, 32]
+        },
+        {
+            "name": "S idle",
+            "rect": [258, 1, 16, 32]
+        },
+        {
+            "name": "S run-1",
+            "rect": [296, 1, 16, 32]
+        },
+        {
+            "name": "S run-2",
+            "rect": [314, 1, 16, 32]
+        },
+        {
+            "name": "S run-3",
+            "rect": [331, 1, 16, 32]
+        },
+        {
+            "name": "S break",
+            "rect": [350, 1, 16, 32]
+        },
+        {
+            "name": "S jump",
+            "rect": [369, 1, 16, 32]
+        },
+        {
+            "name": "crouch",
+            "rect": [277, 1, 16, 32] 
         }
+
     ],
 
     "animations": [
@@ -36,6 +69,31 @@
                 "run-1",
                 "run-2",
                 "run-3"
+            ]
+        },
+        {
+            "name": "S run",
+            "frameLen": 6,
+            "frames": [
+                "S run-1",
+                "S run-2",
+                "S run-3"
+            ]
+        },
+        {
+            "name": "transform",
+            "frameLen": 0.1,
+            "frames": [
+                "idle",
+                "medium",
+                "idle",
+                "medium",
+                "idle",
+                "medium",
+                "S idle",
+                "idle",
+                "medium",
+                "S idle"
             ]
         }
     ]

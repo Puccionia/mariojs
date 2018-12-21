@@ -16,6 +16,7 @@ export default class Interactive extends Trait {
     }
 
     update(us, deltaTime, level) {
+        
 
         if(this.hitten == true) {
             return;
@@ -25,16 +26,20 @@ export default class Interactive extends Trait {
             var tile = level.mainTiles.get(us.pos.x / 16, us.pos.y / 16);
             tile.name = 'nothing';
             this.realPos = us.pos.y;
-            //const createEntity = level.entityFactories['goomba'];
-            //const entity = createEntity();
-            //entity.pos.set(us.pos.x, us.pos.y);
-            //level.items.add(entity);
+            if(!this.breakable && !this.surprise){
+                const createCoin = level.entityFactories['coin'];
+                const coin = createCoin();
+                coin.pos.set(us.pos.x, us.pos.y - 10);
+                level.effects.add(coin);
+            }
             this.tomove = false;
             this.moving = true;
+            us.solid.makeCollision = false;
             us.vel.set(0, -80);
         }
 
         if(this.moving === true) {
+            us.solid.makeCollision = true;
             
             if((this.realPos - us.pos.y) > 7){
                 us.vel.set(0, 80);
@@ -46,13 +51,28 @@ export default class Interactive extends Trait {
                 us.pos.y = this.realPos;
                 
                 var tile = level.mainTiles.get(us.pos.x / 16, us.pos.y / 16);
-                tile.name = this.spriteAfterMove;
-                if(!this.breakable) this.hitten = true;
-                //tile.type = 'ground';
-
-               //if(!this.breakable) level.entities.delete(us);
+                
+                if(!this.breakable){
+                    console.log("we");
+                    if(this.surprise){
+                        const spawn = this.surprise();
+                        spawn.pos.set(us.pos.x, us.pos.y);
+                        level.items.add(spawn);
+                    }
+                    this.hitten = true;
+                    tile.name = 'hitten';
+                } 
+                else{
+                    tile.name = this.spriteAfterMove;
+                }
             }
 
+        }
+    }
+
+    collides(us, them, side){
+        if(!them.breaker && them.killable){
+            them.killable.kill();
         }
     }
 }

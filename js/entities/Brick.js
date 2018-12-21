@@ -12,7 +12,7 @@ class Behavior extends Trait {
 
     update(us, deltaTime, level) {
 
-        if(us.interactive.hitten){
+        if(us.interactive.hitten && us.interactive.breakable){
             const createFragment = level.entityFactories['fragment'];
             const tile = level.mainTiles.get(us.pos.x / 16, us.pos.y / 16);
 
