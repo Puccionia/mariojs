@@ -32,11 +32,11 @@ export function loadMisc(entityFactories, tileSprites, miscSprites) {
     }
 
     return Promise.all([
-        addAs(createBrickFactory(tileSprites),'brick'),
-        addAs(createQuestionFactory(tileSprites), 'question'),
-        addAs(createFragmentFactory(miscSprites), 'fragment'),
-        addAs(createCoinFactory(miscSprites), 'coin'),
-        addAs(createMushroomFactory(miscSprites), 'mushroom'),
+        addAs(createBrickFactory(tileSprites, 'brick'),'brick'),
+        addAs(createQuestionFactory(tileSprites, 'question'), 'question'),
+        addAs(createFragmentFactory(miscSprites, 'fragment'), 'fragment'),
+        addAs(createCoinFactory(miscSprites, 'coin'), 'coin'),
+        addAs(createMushroomFactory(miscSprites, 'mushroom'), 'mushroom'),
 
     ])
     .then(() => entityFactories);

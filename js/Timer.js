@@ -1,5 +1,5 @@
 export default class Timer {
-    constructor(deltaTime = 1/60) {
+    constructor(deltaTime = 1/60, game) {
         let accumulatedTime = 0;
         let lastTime = 0;
 
@@ -11,7 +11,7 @@ export default class Timer {
             }
 
             while (accumulatedTime > deltaTime) {
-                this.update(deltaTime);
+                this.update(deltaTime, game);
                 accumulatedTime -= deltaTime;
             }
 

@@ -18,7 +18,7 @@ class Behavior extends Trait {
 
 }
 
-export function createCoinFactory(sprite) {
+export function createCoinFactory(sprite, name) {
 
     const coinAnim = sprite.animations.get('coin');
 
@@ -34,6 +34,7 @@ export function createCoinFactory(sprite) {
 
     return function createCoint() {
         const coin = new Entity();
+        coin.name = name;
         coin.size.set(16, 16);
         coin.vel.set(0, -350);
         

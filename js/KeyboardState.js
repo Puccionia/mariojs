@@ -8,13 +8,14 @@ export default class KeyboardState {
 
         // Holds the callback functions for a key code
         this.keyMap = new Map();
+
     }
 
     addMapping(code, callback) {
         this.keyMap.set(code, callback);
     }
 
-    handleEvent(event) {
+    handleKeyEvent(event) {
         const {code} = event;
 
         if (!this.keyMap.has(code)) {
@@ -35,10 +36,11 @@ export default class KeyboardState {
         this.keyMap.get(code)(keyState);
     }
 
+
     listenTo(window) {
         ['keydown', 'keyup'].forEach(eventName => {
             window.addEventListener(eventName, event => {
-                this.handleEvent(event);
+                this.handleKeyEvent(event);
             });
         });
     }

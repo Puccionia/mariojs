@@ -15,7 +15,7 @@ class Behavior extends Trait {
 
 }
 
-export function createQuestionFactory(sprite) {
+export function createQuestionFactory(sprite, name) {
 
     function routeFrame(question) {
        
@@ -33,6 +33,7 @@ export function createQuestionFactory(sprite) {
 
     return function createQuestion() {
         const question = new Entity();
+        question.name = name;
         question.size.set(10, 16);
         
         question.offset.x = 3;

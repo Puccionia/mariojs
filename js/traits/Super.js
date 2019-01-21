@@ -6,6 +6,8 @@ export default class Super extends Trait {
 
         this.isSuper = false;
         this.toTransform = false;
+        
+        this.crouching = false;
 
         this.transformTime = 0;
 
@@ -26,6 +28,17 @@ export default class Super extends Trait {
                 this.transformTime = 0;
                 
             }
+        }
+
+        if(this.crouching){
+            entity.size.set(14, 16);
+            entity.offset.y = 16;
+            entity.go.acceleration = 0;
+        }
+        else if(this.isSuper) {
+            entity.size.set(14, 32);
+            entity.offset.y = 0;
+            entity.go.acceleration = 400;
         }
     }
 }

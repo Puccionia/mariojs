@@ -55,7 +55,7 @@ class Behavior extends Trait {
 
 }
 
-export function createMushroomFactory(sprite) {
+export function createMushroomFactory(sprite, name) {
 
     function routeFrame(mushroom) {
         return 'mushroom';
@@ -67,6 +67,7 @@ export function createMushroomFactory(sprite) {
 
     return function createMushroom() {
         const mushroom = new Entity();
+        mushroom.name = name;
         mushroom.size.set(16, 16);
         mushroom.vel.set(0, -20);
         

@@ -17,12 +17,16 @@
             "index": [0, 1]
         },
         {
-            "name": "bricks",
+            "name": "brick",
             "index": [1, 0]
         },
         {
             "name": "question",
             "index": [24, 0]
+        },
+        {
+            "name": "rock",
+            "index": [1, 1]
         },
         {
             "name": "hitten",
@@ -39,6 +43,10 @@
         {
             "name": "question-3",
             "index": [26, 0]
+        },
+        {
+            "name": "black",
+            "index": [13, 1]
         },
 
         {

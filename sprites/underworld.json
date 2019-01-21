@@ -17,12 +17,16 @@
             "index": [0, 3]
         },
         {
-            "name": "bricks",
+            "name": "brick",
             "index": [1, 2]
         },
         {
             "name": "question",
             "index": [24, 2]
+        },
+        {
+            "name": "rock",
+            "index": [1, 3]
         },
         {
             "name": "hitten",
@@ -56,6 +60,10 @@
         {
             "name": "pipe-vert-right",
             "index": [1, 11]
+        },
+        {
+            "name": "black",
+            "index": [13, 1]
         },
         {
             "name": "cloud-1-1",

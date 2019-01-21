@@ -7,12 +7,12 @@ import {loadSpriteSheet} from '../loaders.js';
 
 export function loadKoopa() {
     return loadSpriteSheet('koopa')
-    .then(createKoopaFactory);
+    .then(sprite => createKoopaFactory(sprite, 'koopa'));
 }
 
 export function loadBlueKoopa() {
     return loadSpriteSheet('bluekoopa')
-    .then(createKoopaFactory);
+    .then(sprite => createKoopaFactory(sprite, 'bluekoopa'));
 }
 
 const STATE_WALKING = Symbol('walking');
@@ -135,7 +135,7 @@ class Behavior extends Trait {
 }
 
 
-function createKoopaFactory(sprite) {
+function createKoopaFactory(sprite, name) {
     const walkAnim = sprite.animations.get('walk');
     const wakeAnim = sprite.animations.get('wake');
 
@@ -165,6 +165,7 @@ function createKoopaFactory(sprite) {
 
     return function createKoopa() {
         const koopa = new Entity();
+        koopa.name = name;
         koopa.size.set(16, 16);
         koopa.offset.y = 8;
 

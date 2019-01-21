@@ -1,26 +1,56 @@
-import Keyboard from './KeyboardState.js';
+import Keyboard from './Keyboardstate.js';
 
-export function setupKeyboard(mario) {
+export function setupControls(context, game) {
     const input = new Keyboard();
 
     input.addMapping('KeyP', keyState => {
         if (keyState) {
-            mario.jump.start();
+            game.player.jump.start();
         } else {
-            mario.jump.cancel();
+            game.player.jump.cancel();
         }
     });
 
     input.addMapping('KeyO', keyState => {
-        mario.turbo(keyState);
+        game.player.turbo(keyState);
     });
 
     input.addMapping('KeyD', keyState => {
-        mario.go.dir += keyState ? 1 : -1;
+        game.player.go.dir += keyState ? 1 : -1;
     });
 
     input.addMapping('KeyA', keyState => {
-        mario.go.dir += keyState ? -1 : 1;
+        game.player.go.dir += keyState ? -1 : 1;
+    });
+
+    input.addMapping('KeyS', keyState => {
+        if (game.player.super.isSuper && keyState) game.player.super.crouching = true;
+        else game.player.super.crouching = false;
+    });
+
+    input.addMapping('KeyE', keyState => {
+        if(keyState) { 
+            game.editorMode = !game.editorMode;
+            game.showCollision = false;
+            game.camera.setmode(game.editorMode);
+            game.selected = null;
+            game.toReset = !game.toReset;
+        }
+    });
+
+    input.addMapping('KeyC', keyState => {
+        if(keyState) { 
+
+            if(!game.showCollision){
+                game.level.comp.layers.push(game.collisionLayer);
+                game.showCollision = true;
+            }
+            else{
+                game.level.comp.layers.pop();
+                game.showCollision = false;
+            } 
+            
+        }
     });
 
     return input;

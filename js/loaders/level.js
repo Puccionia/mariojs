@@ -14,7 +14,6 @@ import {loadMisc} from '../entities.js';
 }*/
 
 function setupBackgrounds(levelSpec, level, backgroundSprites) {
-    var lastLayer;
 
     levelSpec.layers.forEach(layer => {
         const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpec.patterns);
@@ -22,16 +21,84 @@ function setupBackgrounds(levelSpec, level, backgroundSprites) {
         const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites);
         level.comp.layers.push(backgroundLayer);
 
-        lastLayer = layer;
     });
 
-    return lastLayer;
 }
 
-function setupEntities(levelSpec, level, entityFactory) {
+function barLayerDraw(tiles, sprites, barcontext){
+    const buffer = document.createElement('canvas');
+    buffer.width = 256 + 16;
+    buffer.height = 240;
+
+    const context1 = buffer.getContext('2d');
+
+    for (let x = 0; x <= 1; ++x) {
+        const col = tiles.grid[x];
+        if (col) {
+            col.forEach((tile, y) => {
+                sprites.drawTile(tile.name, context1, x, y);   
+            });
+        }
+    }
+    barcontext.drawImage(buffer,
+        0,
+        0);
+
+}
+
+function barEnemiesrDraw(entities, context){
+    const spriteBuffer = document.createElement('canvas');
+    spriteBuffer.width = 64;
+    spriteBuffer.height = 64;
+    const spriteBufferContext = spriteBuffer.getContext('2d');
+
+    
+    entities.forEach(entity => {
+        spriteBufferContext.clearRect(0, 0, 64, 64);
+
+        entity.draw(spriteBufferContext);
+
+        context.drawImage(
+            spriteBuffer,
+            entity.pos.x,
+            entity.pos.y );
+    });
+    
+}
+
+
+
+function drawBar(levelSpec, backgroundSprites, context, game){
+    levelSpec.layers.forEach(layer => {
+        const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpec.patterns);
+        barLayerDraw(backgroundGrid, backgroundSprites, context);
+    });
+    const enemies = new Set();
+    levelSpec.entities.forEach(({name, pos: [x, y]}) => {
+        const createEntity = game.factory[name];
+        const entity = createEntity();
+        entity.pos.set(x, y);
+        enemies.add(entity);
+    });
+    barEnemiesrDraw(enemies, context);
+
+}
+
+function resetupBackgrounds(levelSpec, level, backgroundSprites, oldtiles) {
+    setupBackgrounds(levelSpec, level, backgroundSprites);
+    level.comp.layers.pop();
+    const mainbg= createBackgroundLayer(level, oldtiles, backgroundSprites);
+    level.comp.layers.push(mainbg);
+    level.mainTiles = oldtiles;
+
+
+}
+
+
+function setupEntities(levelSpec, level, game) {
 
     levelSpec.entities.forEach(({name, pos: [x, y]}) => {
-        const createEntity = entityFactory[name];
+        const createEntity = game.factory[name];
         const entity = createEntity();
         entity.pos.set(x, y);
         level.entities.add(entity);
@@ -39,12 +106,11 @@ function setupEntities(levelSpec, level, entityFactory) {
 
     level.mainTiles.forEach((tile, x, y) => {
         if(tile.type === 'brick' || tile.type === 'question'){
-            const createEntity = entityFactory[tile.type];
+            const createEntity = game.factory[tile.type];
             const entity = createEntity();
             entity.pos.set(x * 16, y * 16);
-            console.log(tile.item);
             if(tile.item){
-                 entity.interactive.surprise = entityFactory[tile.item];
+                 entity.interactive.surprise = game.factory[tile.item];
                  entity.interactive.breakable = false;
             }
             else entity.interactive.surprise = null;
@@ -56,30 +122,89 @@ function setupEntities(levelSpec, level, entityFactory) {
     level.comp.layers.push(itemsLayer);
     const entitiesLayer = createSpriteLayer(level.entities);
     level.comp.layers.push(entitiesLayer);
+
+    if(game.editorMode){
+        const editorLayer = createSpriteLayer(level.toadd);
+        level.comp.layers.push(editorLayer);
+    }
+    
     const effectsLayer = createSpriteLayer(level.effects);
     level.comp.layers.push(effectsLayer);
 }
 
-export function createLevelLoader(entityFactory) {
+export function createLevelLoader(game, bcontext) {
     return async function loadLevel(name) {
         return loadJSON(`./levels/${name}.json`)
         .then(levelSpec => Promise.all([
             levelSpec,
+            loadJSON(`./levels/Bar.json`),
             loadSpriteSheet(levelSpec.spriteSheet),
             loadSpriteSheet(levelSpec.spriteSheet + "items")
+        ]))
+        .then(([levelSpec, barSpec, tileSprites, itemSprites]) => {
+            const level = new Level();
+
+
+            level.entityFactories = game.factory;
+            level.setting = levelSpec.spriteSheet;
+
+            setupBackgrounds(levelSpec, level, tileSprites);
+            level.setCollisionGrid(level.mainTiles);
+
+            loadMisc(game.factory, tileSprites, itemSprites);
+
+            drawBar(barSpec, tileSprites, bcontext, game);
+
+            setupEntities(levelSpec, level, game);
+
+
+            return level;
+        });
+    }
+}
+
+function setAnimTile(game){
+
+        game.level.mainTiles.forEach((tile) => {
+            if(tile.type ===  'question' ){
+                tile.name = 'question'
+            }
+            else if(tile.type === 'brick'){
+                tile.name = 'brick'
+            }
+        });  
+}
+
+export function createReloader(game) {
+    return async function loadLevel(name) {
+        return loadJSON(`./levels/${name}.json`)
+        .then(levelSpec => Promise.all([
+            levelSpec,
+            loadSpriteSheet(game.level.setting),
+            loadSpriteSheet(game.level.setting + "items")
         ]))
         .then(([levelSpec, tileSprites, itemSprites]) => {
             const level = new Level();
 
 
-            level.entityFactories = entityFactory;
+            level.entityFactories = game.factory;
+            level.setting = game.level.setting;
 
-            setupBackgrounds(levelSpec, level, tileSprites);
+            resetupBackgrounds(levelSpec, level, tileSprites, game.level.mainTiles);
+            setAnimTile(game);
+
             level.setCollisionGrid(level.mainTiles);
 
-            loadMisc(entityFactory, tileSprites, itemSprites);
+            loadMisc(game.factory, tileSprites, itemSprites);
 
-            setupEntities(levelSpec, level, entityFactory)
+            setupEntities(levelSpec, level, game);
+            game.level.toadd.forEach(function(entity){
+                const create = game.factory[entity.name];
+                const ent = create();
+                ent.pos.set(entity.pos.x, entity.pos.y);
+                level.entities.add(ent);
+                level.toadd.push(entity);
+            });
 
 
             return level;

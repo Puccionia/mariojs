@@ -7,7 +7,7 @@ import {loadSpriteSheet} from '../loaders.js';
 
 export function loadGoomba() {
     return loadSpriteSheet('goomba')
-    .then(createGoombaFactory);
+    .then(sprite => createGoombaFactory(sprite, 'goomba'));
 }
 
 
@@ -47,7 +47,7 @@ class Behavior extends Trait {
 }
 
 
-function createGoombaFactory(sprite) {
+function createGoombaFactory(sprite, name) {
     const walkAnim = sprite.animations.get('walk');
 
     function routeAnim(goomba) {
@@ -69,6 +69,7 @@ function createGoombaFactory(sprite) {
 
     return function createGoomba() {
         const goomba = new Entity();
+        goomba.name = name;
         goomba.size.set(16, 16);
 
         goomba.addTrait(new Physics());

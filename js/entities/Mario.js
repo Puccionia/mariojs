@@ -14,10 +14,10 @@ const FAST_DRAG = 1/5000;
 
 export function loadMario() {
     return loadSpriteSheet('mario')
-    .then(createMarioFactory);
+    .then(sprite => createMarioFactory(sprite, 'mario'));
 }
 
-function createMarioFactory(sprite) {
+function createMarioFactory(sprite, name) {
     const runAnim = sprite.animations.get('run');
     const runAnimS = sprite.animations.get('S run');
     const transf = sprite.animations.get('transform');
@@ -43,6 +43,10 @@ function createMarioFactory(sprite) {
     }
 
     function routeFrameSuper(mario) {
+        if (mario.super.crouching){
+            return 'crouch';
+        }
+
         if (mario.jump.falling) {
             return 'S jump';
         }
@@ -72,6 +76,7 @@ function createMarioFactory(sprite) {
 
     return function createMario() {
         const mario = new Entity();
+        mario.name = name;
         mario.size.set(14, 16);
         mario.offset.y = 16;
         mario.offset.x = 1;

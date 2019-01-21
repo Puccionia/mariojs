@@ -18,7 +18,7 @@ class Behavior extends Trait {
 
 }
 
-export function createFragmentFactory(sprite) {
+export function createFragmentFactory(sprite, name) {
 
     const fragAnim = sprite.animations.get('fragment');
 
@@ -34,6 +34,7 @@ export function createFragmentFactory(sprite) {
 
     return function createFragment() {
         const fragment = new Entity();
+        fragment.name = name;
         fragment.size.set(8, 8);
         
         fragment.addTrait(new Physics());

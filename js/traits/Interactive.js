@@ -53,7 +53,6 @@ export default class Interactive extends Trait {
                 var tile = level.mainTiles.get(us.pos.x / 16, us.pos.y / 16);
                 
                 if(!this.breakable){
-                    console.log("we");
                     if(this.surprise){
                         const spawn = this.surprise();
                         spawn.pos.set(us.pos.x, us.pos.y);

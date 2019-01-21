@@ -47,12 +47,12 @@ class Behavior extends Trait {
 
 }
 
-export function createBrickFactory(sprite) {
+export function createBrickFactory(sprite, name) {
 
     function routeFrame(brick) {
        
         if(brick.interactive.moving === true){
-            return 'bricks';
+            return 'brick';
         }
         
         return 'nothing';
@@ -64,6 +64,7 @@ export function createBrickFactory(sprite) {
 
     return function createBrick() {
         const brick = new Entity();
+        brick.name = name;
         brick.size.set(10, 16);
         
         brick.offset.x = 3;
@@ -78,7 +79,7 @@ export function createBrickFactory(sprite) {
         brick.solid.entityCollides = false;
         brick.physics.enableGravity = false;
         brick.interactive.breakable = true;
-        brick.interactive.spriteAfterMove = 'bricks';
+        brick.interactive.spriteAfterMove = 'brick';
 
         brick.draw = drawBrick;
         return brick;

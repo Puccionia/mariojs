@@ -9,6 +9,26 @@
         {
             "name": "fragment-2",
             "rect": [212, 36, 8, 8]
+        },
+        {
+            "name": "coin-1",
+            "rect": [144, 112, 16, 16]
+        },
+        {
+            "name": "coin-2",
+            "rect": [160, 112, 16, 16]
+        },
+        {
+            "name": "coin-3",
+            "rect": [176, 112, 16, 16]
+        },
+        {
+            "name": "coin-4",
+            "rect": [192, 112, 16, 16]
+        },
+        {
+            "name": "mushroom",
+            "rect": [160, 0, 16, 16]
         }
     ],
 
@@ -19,6 +39,16 @@
             "frames": [
                 "fragment-1",
                 "fragment-2"
+            ]
+        },
+        {
+            "name": "coin",
+            "frameLen": 0.05,
+            "frames": [
+                "coin-4",
+                "coin-3",
+                "coin-2",
+                "coin-1"
             ]
         }
     ]

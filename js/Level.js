@@ -13,9 +13,11 @@ export default class Level {
         this.entities = new Set();
         this.items = new Set();
         this.effects = new Set();
+        this.toadd = [];
 
         this.mainTiles = null;
         this.entityFactories = null;
+        this.setting = null;
 
         this.entityCollider = new EntityCollider(this.entities);
         this.tileCollider = null;
@@ -37,9 +39,7 @@ export default class Level {
             }
         });
         this.effects.forEach(entity => {
-            if(entity.pos.x <= camera.pos.x + 304){
-                entity.update(deltaTime, this);
-            }
+            entity.update(deltaTime, this);
         });
 
 
