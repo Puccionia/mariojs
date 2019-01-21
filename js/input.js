@@ -1,7 +1,7 @@
-import Keyboard from './Keyboardstate.js';
+import KeyboardState from './Keyboardstate.js';
 
 export function setupControls(context, game) {
-    const input = new Keyboard();
+    const input = new KeyboardState();
 
     input.addMapping('KeyP', keyState => {
         if (keyState) {
