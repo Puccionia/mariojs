@@ -1,6 +1,3 @@
-const PRESSED = 1;
-const RELEASED = 0;
-
 export default class KeyboardState {
     constructor() {
         // Holds the current state of a given key
@@ -25,7 +22,7 @@ export default class KeyboardState {
 
         event.preventDefault();
 
-        const keyState = event.type === 'keydown' ? PRESSED : RELEASED;
+        const keyState = event.type === 'keydown' ? 1 : 0;
 
         if (this.keyStates.get(code) === keyState) {
             return;
