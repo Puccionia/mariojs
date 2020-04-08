@@ -1,4 +1,4 @@
-import KeyboardState from './Keyboardstate.js';
+import KeyboardState from './KeyboardState.js';
 
 export function setupControls(context, game) {
     const input = new KeyboardState();
