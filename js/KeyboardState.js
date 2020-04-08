@@ -1,3 +1,5 @@
+import {Vec2} from './math.js';
+
 export default class KeyboardState {
     constructor() {
         // Holds the current state of a given key
